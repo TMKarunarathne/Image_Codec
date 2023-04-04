@@ -9,6 +9,7 @@ for i = 1:1:x
         zigzag_dct = zigzag(quant_dct{i,j}); 
         dc = [ dc , zigzag_dct(1) ];
         ac = [ ac , zigzag_dct(2:end) ];
+        
     end
 end
 
