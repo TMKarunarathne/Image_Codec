@@ -2,7 +2,7 @@
 close all
 clear all
 clc
-%% add to path 
+%% add to path
 cd 'D:\7th sem\EE596-Image and Video Coding\Mini Project\my_project\image';
 %% Read the original image into a Matrix
 ori_im = imread('Lenna.png');
@@ -16,9 +16,9 @@ imshow(gray_im,[]);
 title('Full Gray Scale Image');
 %% Split to macro blocks
 macro = macroblock(gray_im , [8 8]);
-%% DCT 
+%% DCT
 dct_cof = dctf(macro);
-%% Quantizing 
+%% Quantizing
 % for low quality level = 4
 % for medium quality level = 1
 % for high quality level = 0.25
@@ -32,7 +32,7 @@ dif_dc_co = differential_code(dc);
 run_len_ac = runlength(ac);
 
 %% dc huffman coding
-% dc sybol probability calculation 
+% dc sybol probability calculation
 [prob_dc,symb_dc] = prob_symb(dif_dc_co);
 % Huffman Codebook
 codebook_dc = Huff_codebook( prob_dc , symb_dc );
@@ -43,7 +43,7 @@ file_01 = 'encoded_dc.txt';
 save_data(dc_encoded,file_01);
 
 %% ac huffman coding
-% ac sybol probability calculation 
+% ac sybol probability calculation
 [prob_ac,symb_ac] = prob_symb(run_len_ac);
 % Huffman Codebook
 codebook_ac = Huff_codebook( prob_ac , symb_ac );
@@ -55,11 +55,11 @@ save_data(ac_encoded,file_02);
 
 %% DC decoding
 dec_dc_dif = Huff_decode(file_01,codebook_dc); % huffman decoding the dc
-dec_dc_co = inv_differential_code(dec_dc_dif ); 
+dec_dc_co = inv_differential_code(dec_dc_dif );
 %% AC decoding
 dec_ac_run = Huff_decode(file_02,codebook_ac); % huffman decoding the ac
 dec_ac = inv_runlength(dec_ac_run);
-%% Combine the decoded dc and ac 
+%% Combine the decoded dc and ac
 [row_mac , col_mac] = size(macro);
 dec_dct_cof= inv_dcac_extract(dec_dc_co , dec_ac , row_mac , col_mac);
 %% inverse quantizer
